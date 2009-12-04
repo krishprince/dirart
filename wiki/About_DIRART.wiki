@@ -1,5 +1,3 @@
-#About DIRART project
-
 DIRART is a relatively large and ambitious project. It was started two years ago as a deformable image registration MATLAB program with simple graphics. After continuous improvements and a few major redesigns, it has become a software package for deformable image registration and adaptive radiotherapy research. The scale of DIRART is relatively large. Up to now, it contains 450+ MATLAB program files with 40000+ program lines, plus many C/C++ programs to interface with ITK (Insight Segmentation and Registration Toolkit) and other software packages.
 
 
