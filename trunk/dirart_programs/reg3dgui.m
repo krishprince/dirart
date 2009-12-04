@@ -5,10 +5,10 @@ function varargout = reg3dgui(varargin)
 %
 % Usage:
 % 1:  reg3dgui,   with no arguments
-% 2:  reg3dgui(imgm,imgf), where imgm is the moving image, and imgf is the
+% 2:  reg3dgui(img1,img2), where img1 is the moving image, and img2 is the
 %     fixed image
-% 3:  reg3dgui(imgm_filename,imgm_filename)
-% 4.  reg3dgui(imgm,imgf,other_arguments_pairs)
+% 3:  reg3dgui(img1_filename,img2_filename)
+% 4.  reg3dgui(img1,img2,other_arguments_pairs)
 %     Other arguments pairs: giving the name of the argument, then the
 %     argument
 %       'i1vx' - the deformed moving image
@@ -25,6 +25,7 @@ function varargout = reg3dgui(varargin)
 %       'aspectratio" - display the images according to their voxel size ratio, or not, default is 1, mean 'yes'
 %       'offsets' - the image offsets in pixels if image sizes are different
 %       'window'  - display image intensity window width and level
+%		'voxelsize' - set voxel sizes for both images
 %
 %reg3dgui M-file for reg3dgui.fig
 %      reg3dgui, by itself, creates a new reg3dgui or raises the existing
@@ -225,6 +226,9 @@ if ~isempty(varargin)
 						set(handles.gui_handles.motioncheckbox,'Value',varargin{k+1});
 					case 'aspectratio'
 						set(handles.gui_handles.aspectratiocheckbox,'Value',varargin{k+1});
+					case 'voxelsize'
+						handles.images(1).voxelsize = varargin{k+1};
+						handles.images(2).voxelsize = varargin{k+1};
 					case 'offsets'
 						handles.reg.images_setting.image_offsets = varargin{k+1};
 						handles.reg.images_setting.image_current_offsets = varargin{k+1};
@@ -281,6 +285,8 @@ if ~isempty(varargin)
 	end
 end
 
+handles = InitSliderPosition(handles);
+handles = reconfigure_sliders(handles);
 handles = CheckSettingParameters(handles);
 
 global reg3dgui_global_windows_centers reg3dgui_global_windows_widths;
@@ -316,7 +322,10 @@ else
 	end
 end
 Panel_Layout_2M_2S_Menu_Item_Callback(hObject, eventdata, handles);
-FirstHelp;
+
+if isempty(handles.images(1).image)
+	FirstHelp;
+end
 return;
 
 % --- Executes on button press in loadimage1button.
@@ -5993,4 +6002,3 @@ function Dose_Line_2_Structure_Menu_Item_Callback(hObject, eventdata, handles)
 % hObject    handle to Dose_Line_2_Structure_Menu_Item (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-

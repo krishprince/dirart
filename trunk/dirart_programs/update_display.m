@@ -232,6 +232,10 @@ switch( displaymode )
 			maxCL = handles.gui_options.difference_image_range;
 		end
 		
+		if maxCL == 0
+			maxCL = max(maxCL,1e-6);
+		end
+		
 		if displaymode <= 7	% in gray
 			himg = imagesc(vec.xs,vec.ys,diffimg,[-maxCL maxCL]);
 			colormap(hAxes,MAP);

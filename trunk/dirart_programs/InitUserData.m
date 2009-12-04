@@ -101,6 +101,7 @@ handles.reg.images_setting.image_offsets = [0 0 0];
 handles.reg.images_setting.image_current_offsets = [0 0 0];
 handles.reg.images_setting.cropped_image_offsets_in_original = [0 0 0; 0 0 0];
 handles.reg.images_setting.max_intensity_value = 1000;
+handles.reg.images_setting.images_alignment_points = [1 1 1;1 1 1];
 
 handles = rmfield_from_struct(handles,'ART');
 handles.ART.dose = [];
