@@ -1,0 +1,13 @@
+#List of relative publications
+
+= Journal articles =
+
+ * D. Yang et al. “A fast inverse consistent deformable image registration method based on symmetric optical flow computation,” Phys. Med. Biol. 53, 6143-65 (2008)
+ * D. Yang et al. “Deformable registration of abdominal kilovoltage treatment planning CT and tomotherapy daily megavoltage CT for treatment adaptation,” Med. Phys. 36, 329-338 (2009)
+ * D. Yang et al. "Technical Note: Deformable image registration on partially matched images for radiotherapy applications," Med. Phys, (2009) in press.
+
+
+= Conference proceedings =
+
+  * D. Yang et al, "Image and Dose Processing for Image Guided Adaptive Radiation Therapy and Outcome Research," Med. Phys, 35(6), page 2952 (2008)
+  * D. Yang et al, "DIRART – a software suite for deformable image registration and adaptive radiotherapy research", Med. Phys, 36(6), page 2538-2593 (2009)
