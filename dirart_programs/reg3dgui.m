@@ -285,8 +285,10 @@ if ~isempty(varargin)
 	end
 end
 
-handles = InitSliderPosition(handles);
-handles = reconfigure_sliders(handles);
+if ~isempty(handles.images(1).image)
+	handles = InitSliderPosition(handles);
+	handles = reconfigure_sliders(handles);
+end
 handles = CheckSettingParameters(handles);
 
 global reg3dgui_global_windows_centers reg3dgui_global_windows_widths;
