@@ -6,7 +6,14 @@ if ischar(varargin{1})
 	command = varargin{1};
 else
 	command = 'init';
-	img = varargin{1};
+	if ~isstruct(varargin{1})
+		img.image = varargin{1};
+		img.voxelsize = [1 1 1];
+		img.voxel_spacing_dir = [1 1 1];
+		img.origin = [0 0 0];
+	else
+		img = varargin{1};
+	end
 end
 imgout = [];
 
@@ -99,6 +106,11 @@ switch lower(command)
 		img.origin = img.origin + img.voxelsize .* img.voxel_spacing_dir .* [ymin-1 xmin-1 zmin-1];
 
 		imgout = img;
+		if ~isstruct(varargin{1})
+			% array only
+			imgout = img.image;
+		end
+		
 		fprintf('Image is cropped using [%d-%d,%d-%d,%d-%d]\n\tImage size after cropping = [%s]\n',...
 			ymin,ymax,xmin,xmax,zmin,zmax, num2str(size(img.image),'%d '));
 		close;
