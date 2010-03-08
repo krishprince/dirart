@@ -92,8 +92,13 @@ handles.mvy = [];
 handles.mvz = [];
 handles.max = 2000;
 
-if( length(varargin) > 0 )
-	handles.image =  varargin{1};
+if( ~isempty(varargin) )
+    if isstruct(varargin{1}) && isfield(varargin{1},'image') && isfield(varargin{1},'voxelsize') 
+        handles.image = varargin{1}.image;
+        handles.aspects = varargin{1}.voxelsize;
+    else
+        handles.image =  varargin{1};
+    end
 	%handles.image = handles.image/max(handles.image(:));
 	handles.min = min(handles.image(:));
 	handles.max = max(handles.image(:));

@@ -1,5 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Reduce an image applying Gaussian Pyramid.
+%
+% IResult = GPReduce(I,displayflag)
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function IResult = GPReduce(I,displayflag)
 
