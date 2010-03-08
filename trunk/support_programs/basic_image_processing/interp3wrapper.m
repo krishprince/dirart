@@ -41,15 +41,15 @@ end
 
 % Check the directions of the input coordinates
 if length(y)>1 && y(2)<y(1)
-	y = fliplr(MakeRowVector(y));
+	y = fliplr(makeRowVector(y));
 	v = flipdim(v,1);
 end
 if length(x)>1 && x(2)<x(1)
-	x = fliplr(MakeRowVector(x));
+	x = fliplr(makeRowVector(x));
 	v = flipdim(v,2);
 end
 if length(z)>1 && z(2)<z(1)
-	z = fliplr(MakeRowVector(z));
+	z = fliplr(makeRowVector(z));
 	v = flipdim(v,3);
 end
 
@@ -95,35 +95,41 @@ for k = 1:N
 		else
 			zmaxidx = min(length(z),zmaxidx+1);
 		end
-	end
+    end
 	
-	if x(1) < x(end)
-		xmin2 = min(min(min(xi(:,:,zmin:zmax))));
-		xmax2 = max(max(max(xi(:,:,zmin:zmax))));
-		xminidx = find(x<xmin2,1,'last');
-		if isempty(xminidx)
-			xminidx = 1;
-		end
-		xmaxidx = find(x>xmax2,1,'first');
-		if isempty(xmaxidx)
-			xmaxidx = length(x);
-		end
-	else
-		xmin2 = min(min(min(xi(:,:,zmin:zmax))));
-		xmax2 = max(max(max(xi(:,:,zmin:zmax))));
-		xminidx = find(x>xmax2,1,'last');
-		if isempty(xminidx)
-			xminidx = length(x);
-		end
-		xmaxidx = find(x<xmin2,1,'first');
-		if isempty(xmaxidx)
-			xmaxidx = 1;
-		end
-	end
+    completely_outside = 0;
+    
+    xmin2 = min(min(min(xi(:,:,zmin:zmax))));
+    xmax2 = max(max(max(xi(:,:,zmin:zmax))));
+    if min(x)>xmax2 || max(x)<xmin2
+        completely_outside = 1;
+    end
+    if x(1) < x(end)
+        xminidx = find(x<xmin2,1,'last');
+        if isempty(xminidx)
+            xminidx = 1;
+        end
+        xmaxidx = find(x>xmax2,1,'first');
+        if isempty(xmaxidx)
+            xmaxidx = length(x);
+        end
+    else
+        xminidx = find(x>xmax2,1,'last');
+        if isempty(xminidx)
+            xminidx = length(x);
+        end
+        xmaxidx = find(x<xmin2,1,'first');
+        if isempty(xmaxidx)
+            xmaxidx = 1;
+        end
+    end
 	
+    ymin2 = min(min(min(yi(:,:,zmin:zmax))));
+    ymax2 = max(max(max(yi(:,:,zmin:zmax))));
+    if min(y)>ymax2 || max(y)<ymin2
+        completely_outside = 1;
+    end
 	if y(1)<y(end)
-		ymin2 = min(min(min(yi(:,:,zmin:zmax))));
-		ymax2 = max(max(max(yi(:,:,zmin:zmax))));
 		yminidx = find(y<ymin2,1,'last');
 		if isempty(yminidx)
 			yminidx = 1;
@@ -143,13 +149,21 @@ for k = 1:N
 		if isempty(ymaxidx)
 			ymaxidx = 1;
 		end
-	end
+    end
 	
-	if exist('exterpval','var') && ~isempty(exterpval) 
-		out(:,:,zmin:zmax) = interp3(x(xminidx:xmaxidx),y(yminidx:ymaxidx),z(zminidx:zmaxidx),v(yminidx:ymaxidx,xminidx:xmaxidx,zminidx:zmaxidx),xi(:,:,zmin:zmax),yi(:,:,zmin:zmax),zi(:,:,zmin:zmax),method,exterpval);
-	else
-		out(:,:,zmin:zmax) = interp3(x(xminidx:xmaxidx),y(yminidx:ymaxidx),z(zminidx:zmaxidx),v(yminidx:ymaxidx,xminidx:xmaxidx,zminidx:zmaxidx),xi(:,:,zmin:zmax),yi(:,:,zmin:zmax),zi(:,:,zmin:zmax),method);
-	end
+    if completely_outside == 0
+        if exist('exterpval','var') && ~isempty(exterpval)
+            out(:,:,zmin:zmax) = interp3(x(xminidx:xmaxidx),y(yminidx:ymaxidx),z(zminidx:zmaxidx),v(yminidx:ymaxidx,xminidx:xmaxidx,zminidx:zmaxidx),xi(:,:,zmin:zmax),yi(:,:,zmin:zmax),zi(:,:,zmin:zmax),method,exterpval);
+        else
+            out(:,:,zmin:zmax) = interp3(x(xminidx:xmaxidx),y(yminidx:ymaxidx),z(zminidx:zmaxidx),v(yminidx:ymaxidx,xminidx:xmaxidx,zminidx:zmaxidx),xi(:,:,zmin:zmax),yi(:,:,zmin:zmax),zi(:,:,zmin:zmax),method);
+        end
+    else
+        if exist('exterpval','var') && ~isempty(exterpval)
+            out(:,:,zmin:zmax) = exterpval;
+        else
+            out(:,:,zmin:zmax) = 0;
+        end
+    end
 end
 %fprintf('\n');
 
