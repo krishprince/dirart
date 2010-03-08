@@ -44,7 +44,8 @@ switch lower(command)
         
         ylabel('base Transverse', 'fontsize',12, 'fontweight','b')
         %im = max(vols, [], 3);
-        im = squeeze(mean(vols, 3));
+%         im = squeeze(mean(vols, 3));
+        im = squeeze(max(vols, [], 3));
         hIm = imshow(im, 'DisplayRange',[min(im(:)) max(im(:))]);
         daspect([img.voxelsize(2), img.voxelsize(1), 1]);
         set(hIm, 'Hittest', 'off');
@@ -55,7 +56,8 @@ switch lower(command)
                                     'buttondownfcn', '', ...
                                     'nextplot', 'add', 'linewidth', 3);
         ylabel('base Sagittal', 'fontsize',12, 'fontweight','b')
-        im = squeeze(mean(vols, 2));
+%         im = squeeze(mean(vols, 2));
+        im = squeeze(max(vols, [],2));
         hIm = imshow(im', 'DisplayRange',[min(im(:)) max(im(:))]);
         daspect([img.voxelsize(3), img.voxelsize(2), 1]);
         set(hIm, 'Hittest', 'off');

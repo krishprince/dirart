@@ -4,10 +4,12 @@ function [img,pathname1,planC] = Load1CERRImage(handles,use_DICOM_coordinate,pla
 %
 
 img = [];
-planC = [];
+if ~exist('use_DICOM_coordinate','var')
+	use_DICOM_coordinate = 0;
+end
 
 if ~exist('planC','var') || isempty(planC)
-	[filename1, pathname1] = uigetfile({'*.mat'}, 'Select CERR plan for image # 1');	% Load a 3D image in MATLAB *.mat file
+	[filename1, pathname1] = uigetfile({'*.mat'}, 'Select CERR plan to image');	% Load a 3D image in MATLAB *.mat file
 	if filename1 == 0
 		setinfotext('Loading image is cancelled');
 		return;
@@ -15,8 +17,13 @@ if ~exist('planC','var') || isempty(planC)
 
 	filename1 = [pathname1,filename1];
 	load(filename1);
+    fprintf('Loading planC from %s\n',filename1);
 	setinfotext('Image is loaded'); drawnow;
-	handles = Logging(handles,'Image is loaded from %s', filename1);
+	if exist('handles','var') && ~isempty(handles)
+		Logging(handles,'Image is loaded from %s', filename1);
+	end
+else
+	pathname1 = [];
 end
 
 scanno = SelectScanFromPlanC(planC);

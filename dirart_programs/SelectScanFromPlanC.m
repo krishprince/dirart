@@ -20,6 +20,8 @@ if N > 1
 	if ok == 0
 		scanno = 0;
 		return;
+    else
+        fprintf('Select scan = %s\n',scanstrs{scanno});
 	end
 else
 	scanno = 1;

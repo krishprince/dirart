@@ -213,7 +213,8 @@ switch( displaymode )
 		colormap(hAxes,MAP);
 		timg = img;
 	case 3	% Composite image
-		timg(:,:,1) = moving_image;
+% 		timg(:,:,1) = moving_image*0;
+		timg(:,:,1) = fixed_image;
 		timg(:,:,2) = fixed_image;
 		timg(:,:,3) = i1vx;
 		if viewdir ~= 3
