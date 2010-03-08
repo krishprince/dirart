@@ -50,7 +50,7 @@ function varargout = reg3dgui(varargin)
 
 % Edit the above text to modify the response to help reg3dgui
 
-% Last Modified by GUIDE v2.5 24-Mar-2009 11:29:32
+% Last Modified by GUIDE v2.5 07-Mar-2010 16:53:22
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 0;
@@ -2365,7 +2365,7 @@ return;
 
 % --------------------------------------------------------------------
 function GPRduce_Menu_Item_Callback(hObject, eventdata, handles)
-Preprocessing_Images_2(handles,'GPRduce');
+Preprocessing_Images_2(handles,'GPReduce');
 return;
 
 % --------------------------------------------------------------------
@@ -6004,3 +6004,29 @@ function Dose_Line_2_Structure_Menu_Item_Callback(hObject, eventdata, handles)
 % hObject    handle to Dose_Line_2_Structure_Menu_Item (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function Load_Dicom_Images_Folder_Menu_Item_Callback(hObject, eventdata, handles)
+% hObject    handle to Load_Dicom_Images_Folder_Menu_Item (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+Load_2_Images(handles,4);
+
+
+% --------------------------------------------------------------------
+function Intensity_Transformation_Menu_Callback(hObject, eventdata, handles)
+% hObject    handle to Intensity_Transformation_Menu (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function Subtract_local_average_intensity_Menu_Item_Callback(hObject, eventdata, handles)
+% hObject    handle to Subtract_local_average_intensity_Menu_Item (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+% --------------------------------------------------------------------
+Preprocessing_Images(handles,'subtract_local_average_intensity');
+return;
+

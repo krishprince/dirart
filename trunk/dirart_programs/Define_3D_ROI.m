@@ -123,7 +123,8 @@ try
 	close(hfig1);
 	close(hfig2);
 	close(hfig3);
-catch
+catch ME
+    print_lasterror(ME);
 end
 set(handles.gui_handles.axes_handles(1:3),'UIContextMenu',handles.gui_handles.Popup_Menu_View_Selection_2);
 

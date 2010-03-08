@@ -5,6 +5,7 @@ function Load_2_Images(handles,sourcetype)
 %	sourcetype: 1 - MATLAB
 %				2 - CERR
 %				3 - DICOM (via CERR)
+%				4 - DICOM files in folders (via load_3d_image_dicom)
 %
 
 handles = RemoveUndoInfo(handles);
@@ -28,6 +29,8 @@ for k = 1:2
 				img = Load1CERRImage(handles,1,planC);
 				img.filename = pathname;
 			end
+		case 4
+			[img,pathname] = Load_1_Image_DICOM_Folder;
 	end
 	
 	if isempty(img)

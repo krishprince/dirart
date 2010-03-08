@@ -34,14 +34,16 @@ for k = 1:2
 				handles = Logging(handles,'Image #%d is smoothed',k);
 			case 'edge_preserve_smooth'
 				setinfotext(sprintf('Edge preserve smoothing image #%d ...',k));
+%                 filterno = 13;
+                filterno = 2;
 				if sum(isnan(handles.images(k).image)) == 0
-					handles.images(k).image = denoise3in2(13,handles.images(k).image);
+					handles.images(k).image = denoise3in2(filterno,handles.images(k).image);
 				else
 					nanmask = ~isnan(handles.images(k).image);
 					img1 = handles.images(k).image;
 					img1(isnan(img1)) = 0;
-% 					img1 = denoise3in2(13,img1);
-					img1 = denoise3in2(13,img1,1,1,2);
+% 					img1 = denoise3in2(filterno,img1);
+					img1 = denoise3in2(filterno,img1,1,1,2);
 					img1(~nanmask) = nan;
 					handles.images(k).image = img1;
 				end
@@ -81,6 +83,9 @@ for k = 1:2
 			case 'nonlinear_histogram_adjustment_for_lung'
 				handles.images(k).image = Nonlinear_Histogram_Adjustment_For_Lung(handles.images(k).image);
 				handles = Logging(handles,'Nonlinear HE for both images for lung on image #%d',k);
+            case 'subtract_local_average_intensity'
+				handles.images(k).image = subtract_image_local_average(handles.images(k).image);
+				handles = Logging(handles,'Subtract local image average on image #%d',k);
 		end
 		modified = 1;
 	end
@@ -118,6 +123,9 @@ if modified == 1
 			handles = Use_Default_Window_Level(handles);
 		case 'nonlinear_histogram_adjustment_for_lung'
 			setinfotext('Nonlinear adjusted finished');
+			handles = Use_Default_Window_Level(handles);
+        case 'subtract_local_average_intensity'
+			setinfotext('subtract_local_average_intensity adjusted finished');
 			handles = Use_Default_Window_Level(handles);
 		otherwise
 			setinfotext(sprintf('Unknown image preprocessing action: %s',action));
