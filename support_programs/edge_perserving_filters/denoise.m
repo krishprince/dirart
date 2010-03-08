@@ -68,6 +68,11 @@ handles.center = 0.5;
 handles.width = 1;
 guidata(hObject, handles);
 
+if nargin > 3
+    load_image_Callback([], varargin{1}, handles);
+end
+
+
 % --- Outputs from this function are returned to the command line.
 function varargout = artistic_OutputFcn(hObject, eventdata, handles)
 % varargout  cell array for returning output args (see VARARGOUT);
@@ -85,56 +90,65 @@ function load_image_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-[FileName,PathName] = uigetfile({'*.jpg; *.jpeg; *.png; *.bmp; *.hdf; *.pbm; *.pcx; *.pgm; *.pnm; *.ppm; *.ras; *.tif; *.tiff; *.xwd; *.dcm', 'All Image Files'; ...
- '*.dcm; *.img','DICOM (*.dcm,*.img)'; ...
- '*.jpg; *.jpeg','JPEG (*.jpg, *.jpeg)'; ...
- '*.png','Portable Network Graphics (*.png)'; ...
- '*.bmp','Windows Bitmap (*.bmp)'; ...
- '*.hdf','Hierarchical Data Format (*.hdf)'; ...
- '*.pbm','Portable Bitmap (*.pbm)'; ...
- '*.pcx','Windows Paintbrush (*.pcx)'; ...
- '*.pgm','Portable Graymap (*.pgm)'; ...
- '*.pnm','Portable Anymap (*.pnm)'; ...
- '*.ppm','Portable Pixmap (*.ppm)'; ...
- '*.ras','Sun Raster (*.ras)'; ...
- '*.tif; *.tiff','Tagged Image File Format (*.tif, *.tiff)'; ...
- '*.xwd','X Windows Dump (*.xwd)'; ...
- '*', 'All Files (*.*)'}, ...
- 'Load image');
-
-if FileName
-	[pathstr, namestr, extstr] = fileparts(FileName);
-	if strcmpi(extstr,'.dcm') == 1 || strcmpi(extstr,'.img') == 1
-		% dicom image
-	    handles.img = double(dicomread([PathName,FileName]));
-		handles.img = handles.img / max(handles.img(:));
-	else
-	    handles.img = double(imread([PathName,FileName]))/255;
-	end
-	if isfield(handles,'out')
-		handles = rmfield(handles,'out');
-	end
-    guidata(hObject, handles);
+if isempty(eventdata)
+    [FileName,PathName] = uigetfile({'*.jpg; *.jpeg; *.png; *.bmp; *.hdf; *.pbm; *.pcx; *.pgm; *.pnm; *.ppm; *.ras; *.tif; *.tiff; *.xwd; *.dcm', 'All Image Files'; ...
+        '*.dcm; *.img','DICOM (*.dcm,*.img)'; ...
+        '*.jpg; *.jpeg','JPEG (*.jpg, *.jpeg)'; ...
+        '*.png','Portable Network Graphics (*.png)'; ...
+        '*.bmp','Windows Bitmap (*.bmp)'; ...
+        '*.hdf','Hierarchical Data Format (*.hdf)'; ...
+        '*.pbm','Portable Bitmap (*.pbm)'; ...
+        '*.pcx','Windows Paintbrush (*.pcx)'; ...
+        '*.pgm','Portable Graymap (*.pgm)'; ...
+        '*.pnm','Portable Anymap (*.pnm)'; ...
+        '*.ppm','Portable Pixmap (*.ppm)'; ...
+        '*.ras','Sun Raster (*.ras)'; ...
+        '*.tif; *.tiff','Tagged Image File Format (*.tif, *.tiff)'; ...
+        '*.xwd','X Windows Dump (*.xwd)'; ...
+        '*', 'All Files (*.*)'}, ...
+        'Load image');
     
-    axes(handles.image);
-    imshow(handles.img,[handles.center-handles.width/2,handles.center+handles.width/2]);
-    
-    
-    [nr,nc,N] = size(handles.img);
-    
-    s = 700/max(nr,nc); if s > 1, s = 1;, end
-    
-    h_graf = gca;
-%     set(h_graf, 'Position', [161, 707-nr*s, nc*s, nr*s]);
-    set(h_graf, 'Visible', 'On', 'XTick', [], 'YTick', []);
-    
-    
-    h_but = findobj('Tag', 'create');
-    set(h_but, 'Enable', 'On');
-    
-    h_show  = findobj('Tag', 'show_img');
-    set(h_show, 'Enable', 'off');
+    if FileName
+        [pathstr, namestr, extstr] = fileparts(FileName);
+        if strcmpi(extstr,'.dcm') == 1 || strcmpi(extstr,'.img') == 1
+            % dicom image
+            handles.img = double(dicomread([PathName,FileName]));
+            handles.img = handles.img / max(handles.img(:));
+        else
+            handles.img = double(imread([PathName,FileName]))/255;
+        end
+    else
+        return;
+    end
+else
+    % image data is passed
+    handles.img = double(eventdata);
+    handles.img = handles.img / max(handles.img(:));
 end
+
+if isfield(handles,'out')
+    handles = rmfield(handles,'out');
+end
+guidata(handles.figure1, handles);
+
+axes(handles.image);
+imshow(handles.img,[handles.center-handles.width/2,handles.center+handles.width/2]);
+
+
+[nr,nc,N] = size(handles.img);
+
+s = 700/max(nr,nc); if s > 1, s = 1;, end
+
+h_graf = gca;
+%     set(h_graf, 'Position', [161, 707-nr*s, nc*s, nr*s]);
+set(h_graf, 'Visible', 'On', 'XTick', [], 'YTick', []);
+
+
+h_but = findobj('Tag', 'create');
+set(h_but, 'Enable', 'On');
+
+h_show  = findobj('Tag', 'show_img');
+set(h_show, 'Enable', 'off');
 
 
 % --- Executes on button press in create.
@@ -229,7 +243,8 @@ set(h_show, 'Enable', 'on');
 h_save  = findobj('Tag', 'save_effect');
 set(h_save, 'Enable', 'on');
 
-catch
+catch ME
+    print_lasterror(ME)
 	set(h_wait,'string','Error !!!');
 end
 set(hObject, 'Enable', 'on');
