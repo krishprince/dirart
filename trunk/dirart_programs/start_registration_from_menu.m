@@ -38,7 +38,7 @@ else
 	Use_Current_Result_And_Continue = 0;
 end
 
-Not_Deform_Regions = Check_MenuItem(handles.gui_handles.Not_Deform_Regions_Menu_Item,0);
+% Not_Deform_Regions = Check_MenuItem(handles.gui_handles.Not_Deform_Regions_Menu_Item,0);
 
 try
 	if Use_Current_Result_And_Continue == 1
@@ -130,8 +130,8 @@ try
 	end
 	handles = Logging(handles,'\tRegistration is finished at %s', datestr(now));
 	setinfotext('Registration finished');
-catch
-	print_lasterror;
+catch ME
+	print_lasterror(ME);
 	handles = Load_Images_From_Temp_Folder(handles,1);
 	RefreshDisplay(handles);
 	setinfotext('Error happened, registration is not finished');

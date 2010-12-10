@@ -1,7 +1,7 @@
-function newimg = move3dimage(img,Vy,Vx,Vz,method,offsets,modulation)
+function newimg = move3dimage(img,Vy,Vx,Vz,method,offsets,modulation,boundary)
 %
 % Calculate the moved image: 
-%    newimg = move3dimage3(img,Vy,Vx,Vz,method = 'linear',offsets = [0 0 0],modulation = 0)
+%    newimg = move3dimage3(img,Vy,Vx,Vz,method = 'linear',offsets = [0 0 0],modulation = 0,boundary='limit')
 %
 % Input: 
 %	Vy, Vx, Vz	- the motion field
@@ -11,6 +11,7 @@ function newimg = move3dimage(img,Vy,Vx,Vz,method,offsets,modulation)
 %   modulation  = 0, no modulation
 %				  1, Jacobian modulation
 %				  2, total density preservation modulation
+%   boundary    = 'free','limit'
 %
 % In version 3, the input method is allowed to be larger than the dimension
 % of motion fields. This actually allows better recostruction of the moved
@@ -41,6 +42,10 @@ end
 
 if ~exist('modulation','var') || isempty(modulation)
 	modulation = 0;
+end
+
+if ~exist('boundary','var') || isempty(boundary)
+	boundary = 'limit';
 end
 
 % defval = 0;	% Value to use for exterpolation
@@ -76,10 +81,10 @@ z0 = single(1:dimmotion(3))+offsets(3);
 if length(z0) <= 20
     [xx,yy,zz] = meshgrid(x0,y0,z0);	% xx, yy and zz are the original coordinates of image pixels
 
-    Vy = yy-Vy; clear yy; Vy = max(Vy,1); Vy = min(Vy,dimimg(1));
-    Vx = xx-Vx; clear xx; Vx = max(Vx,1); Vx = min(Vx,dimimg(2));
+    Vy = yy-Vy; clear yy;
+    Vx = xx-Vx; clear xx;
     if ndims(img) > 2
-        Vz = zz-Vz; clear zz; Vz = max(Vz,1); Vz = min(Vz,dimimg(3));
+        Vz = zz-Vz; clear zz;
     end
 else
     N = round(length(z0)/5);
@@ -99,12 +104,17 @@ else
 end
 
 % recheck the boundaries
-Vy = max(Vy,1); Vy = min(Vy,dimimg(1));
-Vx = max(Vx,1); Vx = min(Vx,dimimg(2));
+switch boundary
+    case 'limit'
+        Vy = max(Vy,1); Vy = min(Vy,dimimg(1));
+        Vx = max(Vx,1); Vx = min(Vx,dimimg(2));
+        if dimimg(3) > 1
+            Vz = max(Vz,1); Vz = min(Vz,dimimg(3));
+        end
+end
 
 if dimimg(3) > 1
-	Vz = max(Vz,1); Vz = min(Vz,dimimg(3));
-	newimg = zeros(dimmotion,'single');
+% 	newimg = zeros(dimmotion,'single');
 % 	if offsets(3) == 0 && size(img,3) == size(Vy,3)
 % 		spacing = 20;
 % 		if mod(dimimg(3),spacing) == 1

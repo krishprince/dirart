@@ -23,14 +23,14 @@ if cur_dim(3) == 1
 	dim(3) = 1;
 end
 
-x0 = single([1:dim(2)]);
-y0 = single([1:dim(1)]);
-z0 = single([1:dim(3)]);
+x0 = single(1:dim(2));
+y0 = single(1:dim(1));
+z0 = single(1:dim(3));
 [xx,yy,zz] = meshgrid(x0,y0,z0);	% xx, yy and zz are the original coordinates of image pixels
 
-laststep_y = single([1:2:dim(1)]+0.5);
-laststep_x = single([1:2:dim(2)]+0.5);
-laststep_z = single([1:2:dim(3)]+0.5);
+laststep_y = single((1:2:dim(1))+0.5);
+laststep_x = single((1:2:dim(2))+0.5);
+laststep_z = single((1:2:dim(3))+0.5);
 
 if dim(3) == 1
 	laststep_z = 1;

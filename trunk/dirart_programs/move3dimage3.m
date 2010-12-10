@@ -25,11 +25,11 @@ Department of radiation oncology
 Washington University in Saint Louis
 %}
 
-if ~exist('method') | isempty(method)
+if ~exist('method','var') || isempty(method)
 	method = 'linear';
 end
 
-if ~exist('offsets') | isempty(offsets)
+if ~exist('offsets','var') || isempty(offsets)
 	offsets = [0 0 0];
 elseif length(offsets) == 1
 	offsets = [0 0 offsets];
@@ -37,9 +37,9 @@ end
 
 dimimg = size(img);
 dimmotion = size(Vy);
-x0 = single([1:dimmotion(2)])+offsets(1);
-y0 = single([1:dimmotion(1)])+offsets(2);
-z0 = single([1:dimmotion(3)])+offsets(3);
+x0 = single(1:dimmotion(2))+offsets(1);
+y0 = single(1:dimmotion(1))+offsets(2);
+z0 = single(1:dimmotion(3))+offsets(3);
 [xx,yy,zz] = meshgrid(x0,y0,z0);	% xx, yy and zz are the original coordinates of image pixels
 
 Vy = max((yy-Vy),1); Vy = min(Vy,dimimg(1));

@@ -3924,7 +3924,7 @@ handles.reg.images_setting.image_current_offsets = [0 0 0];
 handles = reconfigure_sliders(handles);
 guidata(handles.gui_handles.figure1,handles);
 
-Save_Images_To_Temp_Folder(handles,0);
+% Save_Images_To_Temp_Folder(handles,0);
 
 Clear_Results_Menu_Item_Callback(hObject, eventdata, handles);
 return;
