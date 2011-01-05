@@ -2,8 +2,8 @@
 
 = Journal articles =
 
- * D. Yang et al. “A fast inverse consistent deformable image registration method based on symmetric optical flow computation,” Phys. Med. Biol. 53, 6143-65 (2008)
- * D. Yang et al. “Deformable registration of abdominal kilovoltage treatment planning CT and tomotherapy daily megavoltage CT for treatment adaptation,” Med. Phys. 36, 329-338 (2009)
+ * <a href=http://iopscience.iop.org/0031-9155/53/21/017>D. Yang et al. “A fast inverse consistent deformable image registration method based on symmetric optical flow computation,” Phys. Med. Biol. 53, 6143-65 (2008)</a>
+ * <a href=http://online.medphys.org/resource/1/mphya6/v36/i2/p329_s1>D. Yang et al. “Deformable registration of abdominal kilovoltage treatment planning CT and tomotherapy daily megavoltage CT for treatment adaptation,” Med. Phys. 36, 329-338 (2009)</a>
  * <a href=http://online.medphys.org/resource/1/mphya6/v38/i1/p67_s1>D. Yang et al. "Technical Note: Deformable image registration on partially matched images for radiotherapy applications," Med. Phys, (2010) Jan 37(1) 141-145</a>
 
 
