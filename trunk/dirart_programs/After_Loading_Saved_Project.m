@@ -32,27 +32,31 @@ Update_Geometry_Limit_Menus(handles,1);
 
 currDir = pwd;
 meshDir = LoadLibMeshContour;
-cd(meshDir)
-
-N = length(handles.ART.structures);
-if N > 0
-	for k = 1:N
-		struct1 = GetElement(handles.ART.structures,k);
-		if isfield(struct1,'meshRep') && struct1.meshRep == 1
-			calllib('libMeshContour','loadSurface',struct1.strUID,struct1.meshS);
-		elseif ~isfield(struct1,'meshRep')
-			if ~isfield(struct1,'meshS')||isempty(struct1.meshS)
-				struct1.meshRep = 0;
-				struct1.meshS = [];
-			else
-				struct1.meshRep = 1;
+if ~isempty(meshDir)
+	cd(meshDir)
+	
+	N = length(handles.ART.structures);
+	if N > 0
+		for k = 1:N
+			struct1 = GetElement(handles.ART.structures,k);
+			if isfield(struct1,'meshRep') && struct1.meshRep == 1
+				calllib('libMeshContour','loadSurface',struct1.strUID,struct1.meshS);
+			elseif ~isfield(struct1,'meshRep')
+				if ~isfield(struct1,'meshS')||isempty(struct1.meshS)
+					struct1.meshRep = 0;
+					struct1.meshS = [];
+				else
+					struct1.meshRep = 1;
+				end
+				handles.ART.structures{k} = struct1;
 			end
-			handles.ART.structures{k} = struct1;
 		end
 	end
+	
+	cd(currDir);
+else
+	uiwait(msgbox('Cannot load the LibMeshContour library which supports 32-bit MATLAB only for now. You won''t be able to use some DIRART contour processing features.','warning','warn'));
 end
-
-cd(currDir);
 
 handles = After_Loading_Project_Set_GUI(handles);
 guidata(handles.gui_handles.figure1,handles);

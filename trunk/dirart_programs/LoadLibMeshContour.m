@@ -3,7 +3,12 @@ currDir = cd;
 meshDir = fileparts(which('libMeshContour.dll'));
 if ~libisloaded('libMeshContour')
 	cd(meshDir)
-	loadlibrary('libMeshContour','MeshContour.h')
+	try
+		loadlibrary('libMeshContour','MeshContour.h')
+	catch ME
+		print_lasterror(ME);
+		meshDir = '';
+	end
 	cd(currDir);
 end
 
