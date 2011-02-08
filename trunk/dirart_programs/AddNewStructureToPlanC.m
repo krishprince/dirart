@@ -42,6 +42,9 @@ for k = 1:N
 	struct1 = ResliceStructures(struct1,zVals);
 	struct1.associatedScan = scanno;
 	struct1.assocScanUID = targetScanUID;
+	struct1.rasterSegments = [];
+	struct1.meshS = [];
+	struct1.contour = makecolumnVector(struct1.contour);
 	
 	planC{indexS.structures} = dissimilarInsert(planC{indexS.structures}, struct1, numStructs+k, []);
 	% Create Raster Segments
