@@ -1,6 +1,13 @@
-function [im3d,info,zs,instances] = load_3d_image_dicom(filenamefilter)
+function [im3d,info,positionMatrix,orientation,pathout] = load_3d_image_dicom(filenamefilter,folderfilter)
 %
-% [im3d,info,zs,instances] = load_3d_image_dicom(filenamefilter)
+% [im3d,info,positionMatrix,orientation,pathout] = load_3d_image_dicom(filenamefilter)
+% [im3d,info,positionMatrix,orientation,pathout] = load_3d_image_dicom(filenamefilter,folderfilter)
+% [im3d,info,positionMatrix,orientation,pathout] = load_3d_image_dicom(filenamefilter,'?') to select a folder
+%
+% Output: positionMatrix is the 4x3 matrix to transform image voxel indexes
+% (starting from 0) to patient coordinate system. For example:
+% [x,y,z] = positionMatrix*[i-1;j-1;k-1;1]; to compute the voxel (i,j,k)
+% center position (x,y,z) in patient image coordinate system defined in DICOM standard. 
 %
 %{
 Copyrighted by:
@@ -20,116 +27,125 @@ im3d = [];
 info = [];
 zs = [];
 instances = [];
+orientation = '';
+positionMatrix = [];
+pathin = '';
+
+if exist('folderfilter','var')
+	if folderfilter == '?'
+		folderfilter = uigetdir('','Select the image file folder');
+		if folderfilter == 0
+			return;
+		end
+	end
+	filenamefilter = [folderfilter filesep filenamefilter];
+end
 
 if ~exist('filenamefilter','var')
 	filenamefilter = [];
 end
 
-if isempty(filenamefilter)
-	while 1
-		cd(pathname);
-		if isempty(filename)
-			[filename, pathname] = uigetfile({'*.IMA;*.dcm','DICOM image files';'*.*','All files (*.*)'},...
-				sprintf('Loading images'), 'MultiSelect', 'on');
-		else
-			filename = sortn(filename);
-			[filename, pathname] = uigetfile({'*.IMA;*.dcm','DICOM image files';'*.*','All files (*.*)'},...
-				sprintf('Loading images, last file was %s',filename{end}), 'MultiSelect', 'on');
-		end
-
-		cd(curdir);
-
-		if( length(filename) == 1 & filename == 0 )
-			break;
-		end
-
-		%H = waitbar(0,'Loading ...');
-		fprintf('\n');
-		for k = 1:length(filename)
-			fprintf('.');
-			%waitbar((k-1)/length(filename),H,sprintf('Loading %s ...',filename{k}));
-			info = dicominfo([pathname,filename{k}]);
-			position(:,n) = info.ImagePositionPatient;
-			instances = [instances info.InstanceNumber];
-			im3d2(:,:,n) = dicomread([pathname,filename{k}]);
-			n = n+1;
-		end
-		fprintf('\n');
-		%close(H);
-	end
-else
+if ~isempty(filenamefilter)
 	filename = dir(filenamefilter);
-	pathstr = fileparts(filenamefilter);
-	if length(pathstr) > 0
-		pathstr = [pathstr filesep];
-	end
-	
-	%H = waitbar(0,'Loading ...');
-	fprintf('\n');
-
-% 	im3dtemp = dicomread([pathstr filename(end).name]);
-% 	dim = size(im3dtemp);
-% 	im3d2 = zeros([dim(1) dim(2) length(filename)],class(im3dtemp));
-	
-	for k = 1:length(filename)
-		fprintf('.');
-		%waitbar((k-1)/length(filename),H,sprintf('Loading %s ...',filename(k).name));
-		if isdir([pathstr filename(k).name])
-			continue;
-		end
-		try
-			info1 = dicominfo([pathstr filename(k).name]);
-			if ~isfield(info1,'PatientPosition')
-				continue;
-			end
-			info = info1;
-			
-			position(:,n) = info.ImagePositionPatient;
-			instances = [instances info.InstanceNumber];
-			im3d2(:,:,n) = dicomread([pathstr filename(k).name]);
-			n = n+1;
-		catch
-			fprintf('ERROR: %s\n',lasterr);
-			return;
-		end
-	end
-	fprintf('\n');
-	%close(H);
+else
+	filename = dir;
 end
 
-pos1 = position(3,:);
-[pos2,idx] = unique(pos1);
-if strcmpi(info.PatientPosition ,'HFS')
-	pos2 = flipud(pos2);
-	idx = fliplr(idx);
+pathstr = fileparts(filenamefilter);
+if ~isempty(pathstr)
+	pathout = pathstr;
+	pathstr = [pathstr filesep];
+end
+
+for k = 1:length(filename)
+	fprintf('.');
+	%waitbar((k-1)/length(filename),H,sprintf('Loading %s ...',filename(k).name));
+	if isdir([pathstr filename(k).name])
+		continue;
+	end
+	try
+		info1 = dicominfo([pathstr filename(k).name]);
+		if ~isfield(info1,'PatientPosition')
+			continue;
+		end
+		
+		if isempty(info)
+			% this is the first file
+			% check patient orientation
+			
+			if sum(abs(abs(info1.ImageOrientationPatient)-[1;0;0;0;1;0])) < 0.01
+				% this is transverse image
+				orientation = 'tra';
+			elseif sum(abs(abs(info1.ImageOrientationPatient)-[1;0;0;0;0;1])) < 0.01
+				% this is coronal image
+				orientation = 'cor';
+			elseif sum(abs(abs(info1.ImageOrientationPatient)-[0;1;0;0;0;1])) < 0.01
+				orientation = 'sag';
+			else
+				orientation = 'obl';
+			end
+			
+		end
+		
+		info = info1;
+% 		infos{n} = inf0;
+
+		instances = [instances info.InstanceNumber];
+		position(:,n) = info.ImagePositionPatient;
+		im3d2(:,:,n) = dicomread([pathstr filename(k).name]);
+		
+		n = n+1;
+	catch ME
+		print_lasterror(ME);
+		return;
+	end
+end
+fprintf('\n');
+% end
+
+[dummy,idx] = sort(instances);
+
+switch orientation
+	case 'tra'
+% 		pos1 = position(3,:);
+% 		pos2 = pos1(idx);
+% 		[pos2,idx] = unique(pos1);
+% 		im3d = im3d2(:,:,idx);
+	case 'cor'
+% 		pos1 = position(2,:);
+% 		pos2 = pos1(idx);
+% 		[pos2,idx] = unique(pos1);
+% 		im3d = im3d2(:,:,idx);
+% 		im3d = permute(im3d,[3 2 1]);
+	case 'sag'
+% 		pos1 = position(1,:);
+% 		pos2 = pos1(idx);
+% 		[pos2,idx] = unique(pos1);
+% 		im3d = im3d2(:,:,idx);
+% 		im3d = permute(im3d,[2 3 1]);
+	case 'obl'
+% 		[dummy,idx] = sort(instances);
+% 		im3d = im3d2(:,:,idx);
+% 		pos2 = [];
 end
 
 im3d = im3d2(:,:,idx);
-instances = instances(idx);
-zs = pos2;
+% instances = instances(idx);
 
-% [pos3,idx3] = sort(instances);
-% 
-% im3d = im3d2(:,:,idx);
-% zs = pos2;
-% 
-% % Checking for duplicated z values
-% [zs,idx4] = unique(zs);
-% % zs = -zs;	% Flip the z values
-% im3d = im3d(:,:,idx4);
-% 
-% %im3d = im3d2(:,:,idx3);
-% instances = instances(idx3);[pos3,idx3] = sort(instances);
-% 
-% im3d = im3d2(:,:,idx);
-% zs = pos2;
-% 
-% % Checking for duplicated z values
-% [zs,idx4] = unique(zs);
-% % zs = -zs;	% Flip the z values
-% im3d = im3d(:,:,idx4);
-% 
-%im3d = im3d2(:,:,idx3);
-% instances = instances(idx3);
+pos1 = position(:,idx(1));
+if length(idx)>1
+	pos2 = position(:,idx(2));
+else
+	% 2D image
+	pos2 = position(:,idx(1));
+end
+deltaPos = pos2-pos1;
+
+% dx=info.PixelSpacing(1);
+% dy=info.PixelSpacing(2);
+
+positionMatrix = [reshape(info.ImageOrientationPatient,[3 2])*info.PixelSpacing(1) [deltaPos(1) pos1(1);deltaPos(2) pos1(2); deltaPos(3) pos1(3)]];
+% positionMatrix = pos2;
+
 
 

@@ -29,5 +29,8 @@ else
 		set(handles.gui_handles.tsno,'sliderstep',slider_steps(:,3),'max',dim(3),'min',1,'Value',handles.gui_options.slidervalues(idx,3));
 		set(handles.gui_handles.tsmax,'String',num2str(dim(3)));
 		set(handles.gui_handles.tsinput,'String',num2str(handles.gui_options.slidervalues(idx,3)));
+	else
+		% Turn off slider controls for 2D
+		EnableSliderControls(handles);
 	end
 end
