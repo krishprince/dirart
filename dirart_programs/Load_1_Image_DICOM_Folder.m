@@ -21,7 +21,9 @@ pos1 = positionMatrix * [1;1;1;1];
 pos2 = positionMatrix * [1;1;2;1];
 dist = sqrt(sum((pos1-pos2).^2));
 
-voxelsize(3) = dist;
+if size(img3d,3) > 1
+	voxelsize(3) = dist;
+end
 
 img.original_voxelsize = voxelsize;
 img.voxelsize = voxelsize;

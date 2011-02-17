@@ -46,11 +46,17 @@ return;
 
 function handles = configure_sliders_for_2D(handles)
 % 2D images, we shall disable all sliders
-dim = size(handles.images(1).image);
+EnableSliderControls(handles);
+dim = [size(handles.images(1).image) 1];
 handles.gui_options.slidervalues(:,1) = 1;
 handles.gui_options.slidervalues(:,2) = 1;
 handles.gui_options.slidervalues(:,3) = 1;
 
 set(handles.gui_handles.csno,'max',dim(1));
+set(handles.gui_handles.ssno,'max',dim(2));
+set(handles.gui_handles.tsno,'max',1);
+set(handles.gui_handles.tsmax,'String','1');
 guidata(handles.gui_handles.figure1,handles);
+handles.gui_options.slidermins = [1 1 1];
+handles.gui_options.slidermaxs = dim;
 return;
