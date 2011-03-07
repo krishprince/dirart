@@ -10,7 +10,7 @@ if filename == 0
 end
 
 img = CreateEmptyImage;
-img.image = load_image_from_MATLAB_file(filename);
+img.image = load_image_from_MATLAB_file(fullfile(pathname,filename));
 if isstruct(img.image)
 	img = img.image;
 	return;
