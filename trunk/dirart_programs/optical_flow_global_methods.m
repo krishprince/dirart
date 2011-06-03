@@ -221,7 +221,7 @@ max_motion_per_iteration = 0.5;
 
 fprintf('Starting maximal %d iterations:\n',maxiter);
 for iter=1:maxiter
-	if (~isempty(mainfigure)), set(mainfigure,'Name',[figureTitle sprintf('Optical Flow - %s - Iter %d off %d',windowtitle,iter,maxiter)]); drawnow; end
+% 	if (~isempty(mainfigure)), set(mainfigure,'Name',[figureTitle sprintf('Optical Flow - %s - Iter %d off %d',windowtitle,iter,maxiter)]); drawnow; end
 	[Vya,Vxa,Vza]=hs_velocity_avg3d(Vy,Vx,Vz);
 % 	[Vya,Vxa,Vza]=hs_velocity_avg3d_weighted(Vy,Vx,Vz,1,[],Iy,Ix,Iz);
 % 	[Vya,Vxa,Vza]=hs_velocity_avg3d_weighted(Vy,Vx,Vz,2,[],Iy,Ix,Iz);
