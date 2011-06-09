@@ -1,4 +1,5 @@
-function [mvy,mvx,mvz,i1vx]=levelset_motion_wo_gui(im1,im2,voxelsizes,step,mainfigure,im1ori,mvyori,mvxori,mvzori,resultdir)
+% function [mvy,mvx,mvz,i1vx]=levelset_motion_wo_gui(im1,im2,voxelsizes,step,mainfigure,im1ori,mvyori,mvxori,mvzori,resultdir)
+function [mvy,mvx,mvz,i1vx]=levelset_motion_wo_gui(im1,im2,voxelsizes,step,mainfigure) %,im1ori,mvyori,mvxori,mvzori,resultdir)
 %{
 Levelset deformable registration method without GUI.
 
@@ -44,22 +45,22 @@ if models(1) == 1
 	[mvy,mvx,mvz] = levelset_motion_global_affine(mainfigure,im1,im2,factors(step,1),maxiters(step,1),stops(step,1));
 	%[mvy,mvx,mvz] = levelset_motion_global_affine_wo_gui(im1,im2,factors(step,1),maxiters(step,1),stops(step,1));
 	disp('Moving 3D images after global affine approximation');
-	if ~isempty(mainfigure)
-		disp('Updating GUI');
-		mvyori2 = move3dimage(mvyori,mvy,mvx,mvz,'linear') + mvy;
-		mvxori2 = move3dimage(mvxori,mvy,mvx,mvz,'linear') + mvx;
-		mvzori2 = move3dimage(mvzori,mvy,mvx,mvz,'linear') + mvz;
-		i1vx = move3dimage(im1ori,mvyori2,mvxori2,mvzori2);
-		UpdateGUI(mainfigure,mvyori2,mvxori2,mvzori2,mvy,mvx,mvz,i1vx);
-		
-		if ~exist('resultdir','var') && ~isempty(resultdir)
-			save(sprintf('%sstep%d_after_global_affine_i1vx.mat',resultdir,step),'i1vx');
-			save(sprintf('%sstep%d_after_global_affine_mvs.mat',resultdir,step),'mvx','mvy','mvz');
-		end
-		
-	else
+% 	if ~isempty(mainfigure)
+% 		disp('Updating GUI');
+% 		mvyori2 = move3dimage(mvyori,mvy,mvx,mvz,'linear') + mvy;
+% 		mvxori2 = move3dimage(mvxori,mvy,mvx,mvz,'linear') + mvx;
+% 		mvzori2 = move3dimage(mvzori,mvy,mvx,mvz,'linear') + mvz;
+% 		i1vx = move3dimage(im1ori,mvyori2,mvxori2,mvzori2);
+% 		UpdateGUI(mainfigure,mvyori2,mvxori2,mvzori2,mvy,mvx,mvz,i1vx);
+% 		
+% 		if ~exist('resultdir','var') && ~isempty(resultdir)
+% 			save(sprintf('%sstep%d_after_global_affine_i1vx.mat',resultdir,step),'i1vx');
+% 			save(sprintf('%sstep%d_after_global_affine_mvs.mat',resultdir,step),'mvx','mvy','mvz');
+% 		end
+% 		
+% 	else
 		i1vx = move3dimage(im1,mvy,mvx,mvz);
-	end
+% 	end
 end
 
 abortflag = CheckAbortPauseButtons(mainfigure,0);
@@ -90,22 +91,22 @@ if models(2) == 1
 			maxiters(step,2),stops(step,2),LocalAffineBlockSize,[],lowpass_kernal_size);
 	end
 	disp('Moving 3D images after local affine approximation');
-	if ~isempty(mainfigure)
-		disp('Updating GUI');
-		mvyori2 = move3dimage(mvyori,mvy,mvx,mvz,'linear') + mvy;
-		mvxori2 = move3dimage(mvxori,mvy,mvx,mvz,'linear') + mvx;
-		mvzori2 = move3dimage(mvzori,mvy,mvx,mvz,'linear') + mvz;
-		i1vx = move3dimage(im1ori,mvyori2,mvxori2,mvzori2);
-		UpdateGUI(mainfigure,mvyori2,mvxori2,mvzori2,mvy,mvx,mvz,i1vx);
-		
-		if ~exist('resultdir','var') && ~isempty(resultdir)
-			save(sprintf('%sstep%d_after_local_affine_i1vx.mat',resultdir,step),'i1vx');
-			save(sprintf('%sstep%d_after_local_affine_mvs.mat',resultdir,step),'mvx','mvy','mvz');
-		end
-
-	else
+% 	if ~isempty(mainfigure)
+% 		disp('Updating GUI');
+% 		mvyori2 = move3dimage(mvyori,mvy,mvx,mvz,'linear') + mvy;
+% 		mvxori2 = move3dimage(mvxori,mvy,mvx,mvz,'linear') + mvx;
+% 		mvzori2 = move3dimage(mvzori,mvy,mvx,mvz,'linear') + mvz;
+% 		i1vx = move3dimage(im1ori,mvyori2,mvxori2,mvzori2);
+% 		UpdateGUI(mainfigure,mvyori2,mvxori2,mvzori2,mvy,mvx,mvz,i1vx);
+% 		
+% 		if ~exist('resultdir','var') && ~isempty(resultdir)
+% 			save(sprintf('%sstep%d_after_local_affine_i1vx.mat',resultdir,step),'i1vx');
+% 			save(sprintf('%sstep%d_after_local_affine_mvs.mat',resultdir,step),'mvx','mvy','mvz');
+% 		end
+% 
+% 	else
 		i1vx = move3dimage(im1,mvy,mvx,mvz);
-	end
+% 	end
 end	
 	
 abortflag = CheckAbortPauseButtons(mainfigure,0);
@@ -135,22 +136,22 @@ if models(3) == 1
 			maxiters(step,3),stops(step,3),spline_smoothing_block_sizes,lowpass_kernal_size,0);
 	end
 	disp('Moving 3D images after spline non-rigid approximation');
-	if ~isempty(mainfigure)
-		disp('Updating GUI');
-		mvyori2 = move3dimage(mvyori,mvy,mvx,mvz,'linear') + mvy;
-		mvxori2 = move3dimage(mvxori,mvy,mvx,mvz,'linear') + mvx;
-		mvzori2 = move3dimage(mvzori,mvy,mvx,mvz,'linear') + mvz;
-		i1vx = move3dimage(im1ori,mvyori2,mvxori2,mvzori2);
-		UpdateGUI(mainfigure,mvyori2,mvxori2,mvzori2,mvy,mvx,mvz,i1vx);
-		
-		if ~exist('resultdir','var') && ~isempty(resultdir)
-			save(sprintf('%sstep%d_after_spline_i1vx.mat',resultdir,step),'i1vx');
-			save(sprintf('%sstep%d_after_spline_mvs.mat',resultdir,step),'mvx','mvy','mvz');
-		end
-		
-	else
+% 	if ~isempty(mainfigure)
+% 		disp('Updating GUI');
+% 		mvyori2 = move3dimage(mvyori,mvy,mvx,mvz,'linear') + mvy;
+% 		mvxori2 = move3dimage(mvxori,mvy,mvx,mvz,'linear') + mvx;
+% 		mvzori2 = move3dimage(mvzori,mvy,mvx,mvz,'linear') + mvz;
+% 		i1vx = move3dimage(im1ori,mvyori2,mvxori2,mvzori2);
+% 		UpdateGUI(mainfigure,mvyori2,mvxori2,mvzori2,mvy,mvx,mvz,i1vx);
+% 		
+% 		if ~exist('resultdir','var') && ~isempty(resultdir)
+% 			save(sprintf('%sstep%d_after_spline_i1vx.mat',resultdir,step),'i1vx');
+% 			save(sprintf('%sstep%d_after_spline_mvs.mat',resultdir,step),'mvx','mvy','mvz');
+% 		end
+% 		
+% 	else
 		i1vx = move3dimage(im1,mvy,mvx,mvz);
-	end
+% 	end
 end
 
 abortflag = CheckAbortPauseButtons(mainfigure,0);
@@ -178,22 +179,22 @@ if models(4) == 1
 		[mvy,mvx,mvz] = levelset_motion_free_deform(mainfigure,im1,im2,factors(step,3),maxiters(step,4),stops(step,3),[],lowpass_kernal_size);
 	end
 	disp('Moving 3D images after local free deformation ...');
-	if ~isempty(mainfigure)
-% 		disp('Updating GUI');
-% 		mvyori2 = move3dimage(mvyori,mvy,mvx,mvz,'linear') + mvy;
-% 		mvxori2 = move3dimage(mvxori,mvy,mvx,mvz,'linear') + mvx;
-% 		mvzori2 = move3dimage(mvzori,mvy,mvx,mvz,'linear') + mvz;
-		i1vx = move3dimage(im1ori,mvyori2,mvxori2,mvzori2);
- 		UpdateGUI(mainfigure,mvyori2,mvxori2,mvzori2,mvy,mvx,mvz,i1vx);
-		
-		if ~exist('resultdir','var') && ~isempty(resultdir)
-			save(sprintf('%sstep%d_after_free_deformation_i1vx.mat',resultdir,step),'i1vx');
-			save(sprintf('%sstep%d_after_free_deformation_mvs.mat',resultdir,step),'mvx','mvy','mvz');
-		end
-		
-	else
+% 	if ~isempty(mainfigure)
+% % 		disp('Updating GUI');
+% % 		mvyori2 = move3dimage(mvyori,mvy,mvx,mvz,'linear') + mvy;
+% % 		mvxori2 = move3dimage(mvxori,mvy,mvx,mvz,'linear') + mvx;
+% % 		mvzori2 = move3dimage(mvzori,mvy,mvx,mvz,'linear') + mvz;
+% 		i1vx = move3dimage(im1ori,mvyori2,mvxori2,mvzori2);
+%  		UpdateGUI(mainfigure,mvyori2,mvxori2,mvzori2,mvy,mvx,mvz,i1vx);
+% 		
+% 		if ~exist('resultdir','var') && ~isempty(resultdir)
+% 			save(sprintf('%sstep%d_after_free_deformation_i1vx.mat',resultdir,step),'i1vx');
+% 			save(sprintf('%sstep%d_after_free_deformation_mvs.mat',resultdir,step),'mvx','mvy','mvz');
+% 		end
+% 		
+% 	else
 		i1vx = move3dimage(im1,mvy,mvx,mvz);
-	end
+% 	end
 end
 
 return;

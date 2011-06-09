@@ -43,7 +43,8 @@ switch method
 		%[mvy1,mvx1,mvz1] = levelset_motion_0(i1vx,im2,lmfactors(real_step),lmmaxiters(real_step),lmtors(real_step));
 		%[mvy1,mvx1,mvz1] = levelset_motion_wo_gui(i1vx,im2,voxelsizes,step,mainfigure,im1,mvy,mvx,mvz,resultdir);
 		fprintf('Starting improved level set method\n');
-		[mvy1,mvx1,mvz1] = levelset_motion_wo_gui(i1vx,im2,voxelsizes,2,mainfigure,im1,mvy,mvx,mvz);
+% 		[mvy1,mvx1,mvz1] = levelset_motion_wo_gui(i1vx,im2,voxelsizes,2,mainfigure,im1,mvy,mvx,mvz);
+        [mvy1,mvx1,mvz1] = levelset_motion_wo_gui(i1vx,im2,voxelsizes,2,mainfigure);%,im1,mvy,mvx,mvz);
 	case 10 % Affine approximation of motion field
 		fprintf('Starting level set method with affine approximation\n');
 		[mvy1,mvx1,mvz1] = optical_flow_affine(i1vx,im2);
