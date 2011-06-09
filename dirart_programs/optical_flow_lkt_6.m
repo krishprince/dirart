@@ -213,39 +213,39 @@ if method == 1 || method == 3
 		if mod(i,10) == 1
 			fprintf('.');
 		end
-		if isunix == 0
-			AA(1,1,:,:,:) = A11(i,:,:);
-			AA(1,2,:,:,:) = A12(i,:,:);
-			AA(2,1,:,:,:) = A21(i,:,:);
-			AA(2,2,:,:,:) = A22(i,:,:);
-			if ndims(img1) == 3
-				AA(1,3,:,:,:) = A13(i,:,:);
-				AA(2,3,:,:,:) = A23(i,:,:);
-				AA(3,1,:,:,:) = A31(i,:,:);
-				AA(3,2,:,:,:) = A32(i,:,:);
-				AA(3,3,:,:,:) = A33(i,:,:);
-			end
-
-			[VN,DN] = ndfun('eig',AA);
-			VN = real(VN);
-			DN = real(DN);
-			E1(i,:,:) = squeeze(DN(1,1,1,:,:));
-			E2(i,:,:) = squeeze(DN(2,2,1,:,:));
-
-			EV11(i,:,:) = squeeze(VN(1,1,1,:,:));
-			EV12(i,:,:) = squeeze(VN(2,1,1,:,:));
-			EV21(i,:,:) = squeeze(VN(1,2,1,:,:));
-			EV22(i,:,:) = squeeze(VN(2,2,1,:,:));
-
-			if ndims(img1) == 3
-				E3(i,:,:) = squeeze(DN(3,3,1,:,:));
-				EV13(i,:,:) = squeeze(VN(3,1,1,:,:));
-				EV23(i,:,:) = squeeze(VN(3,2,1,:,:));
-				EV31(i,:,:) = squeeze(VN(1,3,1,:,:));
-				EV32(i,:,:) = squeeze(VN(2,3,1,:,:));
-				EV33(i,:,:) = squeeze(VN(3,3,1,:,:));
-			end
-		else
+% 		if isunix == 0
+% 			AA(1,1,:,:,:) = A11(i,:,:);
+% 			AA(1,2,:,:,:) = A12(i,:,:);
+% 			AA(2,1,:,:,:) = A21(i,:,:);
+% 			AA(2,2,:,:,:) = A22(i,:,:);
+% 			if ndims(img1) == 3
+% 				AA(1,3,:,:,:) = A13(i,:,:);
+% 				AA(2,3,:,:,:) = A23(i,:,:);
+% 				AA(3,1,:,:,:) = A31(i,:,:);
+% 				AA(3,2,:,:,:) = A32(i,:,:);
+% 				AA(3,3,:,:,:) = A33(i,:,:);
+% 			end
+% 
+% 			[VN,DN] = ndfun('eig',AA);
+% 			VN = real(VN);
+% 			DN = real(DN);
+% 			E1(i,:,:) = squeeze(DN(1,1,1,:,:));
+% 			E2(i,:,:) = squeeze(DN(2,2,1,:,:));
+% 
+% 			EV11(i,:,:) = squeeze(VN(1,1,1,:,:));
+% 			EV12(i,:,:) = squeeze(VN(2,1,1,:,:));
+% 			EV21(i,:,:) = squeeze(VN(1,2,1,:,:));
+% 			EV22(i,:,:) = squeeze(VN(2,2,1,:,:));
+% 
+% 			if ndims(img1) == 3
+% 				E3(i,:,:) = squeeze(DN(3,3,1,:,:));
+% 				EV13(i,:,:) = squeeze(VN(3,1,1,:,:));
+% 				EV23(i,:,:) = squeeze(VN(3,2,1,:,:));
+% 				EV31(i,:,:) = squeeze(VN(1,3,1,:,:));
+% 				EV32(i,:,:) = squeeze(VN(2,3,1,:,:));
+% 				EV33(i,:,:) = squeeze(VN(3,3,1,:,:));
+% 			end
+% 		else
 			% For unix system
 			for m = 1:dim(2)
 				for n = 1:dim(3)
@@ -276,8 +276,7 @@ if method == 1 || method == 3
 				end
 			end
 		end
-
-	end
+% 	end
 	clear AA;
 	fprintf('\n');
 

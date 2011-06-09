@@ -16,10 +16,16 @@ for k = 1:N
 end
 
 map = RegMethod_Menu_Map;
+max_method_num = max([map.method]);
 
 % Turn on the menu for the selected method
-if handles.reg.registration_method >= 1 && handles.reg.registration_method <= length(map)
-	set(handles.gui_handles.(map(handles.reg.registration_method).menu_name),'checked','on');
+if handles.reg.registration_method >= 1 && handles.reg.registration_method <= max_method_num
+    idx = find([map.method] == handles.reg.registration_method,1,'first');
+    if isempty(idx)
+        warning('DIRART:INTERNAL_PROBLEMS','Mismatching in the DIRART program');
+    else
+        set(handles.gui_handles.(map(idx).menu_name),'checked','on');
+    end
 end
 
 set(get(handles.gui_handles.Registration_Framework_Menu,'child'),'checked','off');
