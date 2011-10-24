@@ -26,10 +26,19 @@ yin = zoom_pt(1,2);
 painter_size = 5;
 % painter_val = 900;
 
-dim = mysize(handles.images(imgno).image);
+% dim = mysize(handles.images(imgno).image);
 
-xs = 1:dim(2);
-ys = 1:dim(1);
+
+displaymode = handles.gui_options.display_mode(idx,2);
+viewdir = handles.gui_options.display_mode(idx,1);
+vecs = GetCombinedImageCoordinateVectors(handles,viewdir);
+vecidx = WhichImageCoordinateToUse(displaymode);
+vec = vecs(vecidx);
+
+xs = vec.xs;
+ys = vec.ys;
+% xs = 1:dim(2);
+% ys = 1:dim(1);
 
 [xx,yy] = meshgrid(xs,ys);
 dist = sqrt((xx-xin).^2+(yy-yin).^2);
