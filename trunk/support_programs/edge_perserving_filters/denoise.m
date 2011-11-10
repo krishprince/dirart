@@ -1,4 +1,4 @@
-function varargout = artistic(varargin)
+function varargout = denoise(varargin)
 % ARTISTIC M-file for artistic.fig
 %      ARTISTIC, by itself, creates a new ARTISTIC or raises the existing
 %      singleton*.
@@ -32,7 +32,7 @@ gui_State = struct('gui_Name',       mfilename, ...
                    'gui_OutputFcn',  @artistic_OutputFcn, ...
                    'gui_LayoutFcn',  [] , ...
                    'gui_Callback',   []);
-if nargin & isstr(varargin{1})
+if nargin && ischar(varargin{1})
     gui_State.gui_Callback = str2func(varargin{1});
 end
 
