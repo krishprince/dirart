@@ -494,7 +494,7 @@ for stage = startingstage:stages
 		delta_mvz = mvz;
 
 		disp('Computing result motion field for this pass by interpolating ...');
-		[mvy,mvx,mvz] = Compose_motion_field(mvy,mvx,mvz,mvy1,mvx1,mvz1,dim1,image_current_offsets);
+		[mvy,mvx,mvz] = compose_motion_field(mvy,mvx,mvz,mvy1,mvx1,mvz1,dim1,image_current_offsets);
 
 		if smoothing_settings(3) > 0
 			smoothing_settings2 = ones(1,max(structure_masks(:))+1)*smoothing_settings(3);

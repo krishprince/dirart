@@ -6,7 +6,7 @@ if ~libisloaded('libMeshContour')
 	try
 		loadlibrary('libMeshContour','MeshContour.h')
 	catch ME
-		print_lasterror(ME);
+		%print_lasterror(ME);
 		meshDir = '';
 	end
 	cd(currDir);

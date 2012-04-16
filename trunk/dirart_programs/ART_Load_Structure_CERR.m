@@ -60,7 +60,9 @@ end
 
 currDir = pwd;
 meshDir = LoadLibMeshContour;
-cd(meshDir);
+if ~isempty(meshDir)
+	cd(meshDir);
+end
 
 hbar = waitbar(0,'Loading structures');
 try
@@ -85,7 +87,7 @@ try
 			[mask3M, uniqueSlices] = rasterToMask(rasterSegments, assocScanID,planC);
 			if isempty(uniqueSlices)
 				isgood = 0;
-			elseif length(uniqueSlices) > 1
+			elseif length(uniqueSlices) > 1 && ~isempty(meshDir)
 				waitbar((k-0.5)/N,hbar,sprintf('Generating meshRep for structure %s',strname));
 				mask3M = permute(mask3M,[2 1 3]);
 				smoothIter = 0;

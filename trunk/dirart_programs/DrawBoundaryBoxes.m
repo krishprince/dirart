@@ -6,7 +6,7 @@ if handles.gui_options.display_boundary_boxes(idx)==1
 	displaymode = handles.gui_options.display_mode(idx,2);
 	viewdir = handles.gui_options.display_mode(idx,1);
 
-	vecidx = whichImageCoordinateToUse(displaymode);
+	vecidx = WhichImageCoordinateToUse(displaymode);
 
 	imgvecs(1) = GetImageCoordinateVectors(handles,1,viewdir,vecidx);
 	imgvecs(2) = GetImageCoordinateVectors(handles,2,viewdir,vecidx);

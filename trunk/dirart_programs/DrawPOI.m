@@ -8,7 +8,7 @@ linecolor = handles.ART.structure_colors(strnum,:);
 sliceCoord = GetCurrentSliceCoordinate(handles,idx);
 
 c = ComputeStructureCenterPos(handles,strnum);
-if whichImageCoordinateToUse(displaymode) ~= handles.ART.structure_assocImgIdxes(strnum)
+if WhichImageCoordinateToUse(displaymode) ~= handles.ART.structure_assocImgIdxes(strnum)
 	[c(2) c(1) c(3)] = TranslateCoordinates(handles,handles.ART.structure_assocImgIdxes(strnum),c(2),c(1),c(3));
 end
 	

@@ -44,29 +44,31 @@ newMask3d = single(newMask3d>0.5);
 %set Matlab path to directory containing the Mesh-library
 currDir = pwd;
 meshDir = LoadLibMeshContour;
-cd(meshDir)
-
-%Load the surface
-newStruct = struct2deform;
-newStruct.structureName = [GetElement(handles.ART.structure_names,strnum) '_deformed'];
-setinfotext(sprintf('Creating new structure: %s ...',newStruct.structureName));
-newStruct.strUID = createUID('structure');
-
-[xVals2,yVals2,zVals2] = TranslateCoordinates(handles,3-imgidx,xVals2,yVals2,zVals2);
-
-smoothIter=0;
-newMask3d = permute(newMask3d,[2 1 3]);
-calllib('libMeshContour','clear','structUID')
-calllib('libMeshContour','loadVolumeAndGenerateSurface',newStruct.strUID,xVals2/10,yVals2/10,zVals2/10,double(newMask3d),0.5, uint16(smoothIter))
-%Store mesh under planC
-newStruct.meshS = calllib('libMeshContour','getSurface',newStruct.strUID);
-
-setinfotext('Creating contour points for every slices ...');
-newStruct = ResliceStructures(newStruct,zValsOut/10);
-%Chenge directory back
-cd(currDir)
-
-% newStruct.associatedScan = scanIndex;
-newStruct.meshRep = 1;
+if ~isempty(meshDir)
+	cd(meshDir);
+	
+	%Load the surface
+	newStruct = struct2deform;
+	newStruct.structureName = [GetElement(handles.ART.structure_names,strnum) '_deformed'];
+	setinfotext(sprintf('Creating new structure: %s ...',newStruct.structureName));
+	newStruct.strUID = createUID('structure');
+	
+	[xVals2,yVals2,zVals2] = TranslateCoordinates(handles,3-imgidx,xVals2,yVals2,zVals2);
+	
+	smoothIter=0;
+	newMask3d = permute(newMask3d,[2 1 3]);
+	calllib('libMeshContour','clear','structUID')
+	calllib('libMeshContour','loadVolumeAndGenerateSurface',newStruct.strUID,xVals2/10,yVals2/10,zVals2/10,double(newMask3d),0.5, uint16(smoothIter))
+	%Store mesh under planC
+	newStruct.meshS = calllib('libMeshContour','getSurface',newStruct.strUID);
+	
+	setinfotext('Creating contour points for every slices ...');
+	newStruct = ResliceStructures(newStruct,zValsOut/10);
+	%Chenge directory back
+	cd(currDir)
+	
+	% newStruct.associatedScan = scanIndex;
+	newStruct.meshRep = 1;
+end
 
 

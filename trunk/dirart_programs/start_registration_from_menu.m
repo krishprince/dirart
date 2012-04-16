@@ -109,7 +109,7 @@ try
 	if Use_Current_Result_And_Continue == 1
 		handles = Logging(handles,'\tComposing new results with previous results');
 		disp('Composing new results with previous results ...');
-		[mvy,mvx,mvz] = Compose_motion_field(mvy_save,mvx_save,mvz_save,mvy,mvx,mvz);
+		[mvy,mvx,mvz] = compose_motion_field(mvy_save,mvx_save,mvz_save,mvy,mvx,mvz);
 		handles.reg.dvf.y = mvy;
 		handles.reg.dvf.x = mvx;
 		handles.reg.dvf.z = mvz;
