@@ -17,7 +17,7 @@ hAxes = gca;
 
 [dimc,img1_offsets_c,img2_offsets_c] = ComputeCombinedImageInfo(handles);
 vecs = GetCombinedImageCoordinateVectors(handles,viewdir);
-vecidx = whichImageCoordinateToUse(displaymode);
+vecidx = WhichImageCoordinateToUse(displaymode);
 vec = vecs(vecidx);
 
 vec1in1 = GetImageCoordinateVectors(handles,1,viewdir,1);

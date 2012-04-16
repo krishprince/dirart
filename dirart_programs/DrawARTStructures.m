@@ -67,12 +67,14 @@ else
 end
 
 
-vecidx = whichImageCoordinateToUse(displaymode);
+vecidx = WhichImageCoordinateToUse(displaymode);
 coord_in_display = vecidx;
 
 currDir = pwd;
 meshDir = LoadLibMeshContour;
-cd(meshDir)
+if ~isempty(meshDir)
+	cd(meshDir);
+end
 hold on;
 for strnum = 1:N
 	if handles.ART.structure_display(strnum) == 0
@@ -124,7 +126,7 @@ for strnum = 1:N
 			end
 
 			s = [1 2 2 1];
-			if abs(coord_slice-coord) <0.01
+			if abs(coord_slice-coord) <0.01 || isempty(meshDir)
 				segments = struct.contour(sliceNum).segments;
 			else
 				% Transfer view
@@ -135,7 +137,7 @@ for strnum = 1:N
 			end
 		elseif viewdir == 1
 			% Coronal view
-			if coord > structInfo.ymax || coord < structInfo.ymin
+			if coord > structInfo.ymax || coord < structInfo.ymin || isempty(meshDir)
 				% out off bound
 				continue;
 			end
@@ -146,7 +148,7 @@ for strnum = 1:N
 			end
 		else
 			% Saggital view
-			if coord > structInfo.xmax || coord < structInfo.xmin
+			if coord > structInfo.xmax || coord < structInfo.xmin || isempty(meshDir)
 				% out off bound
 				continue;
 			end

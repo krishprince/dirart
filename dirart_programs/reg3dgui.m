@@ -2402,7 +2402,7 @@ return;
 
 % --------------------------------------------------------------------
 function Crop_Image_2_Menu_Item_Callback(hObject, eventdata, handles)
-Crop_Image_CallBack(handles,2);
+Crop_Image_Callback(handles,2);
 return;
 
 
