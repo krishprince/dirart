@@ -70,15 +70,21 @@ end
 
 close(hWaitbar);
 
-selected = showDCMInfo(dcmdirS);
-if isempty(selected), return; end;
+if length(patient.PATIENT)==1
+	dcmdir = patient.PATIENT;
+else
+	selected = showDCMInfo(dcmdirS);
+	if isempty(selected), return; end;
+	
+	% Pass the java dicom structures to function to create CERR plan
+	% planC = dcmdir2planC(dcmdirS.(selected)); %wy
 
-% Pass the java dicom structures to function to create CERR plan
-% planC = dcmdir2planC(dcmdirS.(selected)); %wy
-
-dcmdir = dcmdirS.(selected);
-
-
+	if isequal(selected,'all')
+		dcmdir = dcmdirS;
+	else
+		dcmdir = dcmdirS.(selected);
+	end
+end
 
 planInitC = initializeCERR;
        
@@ -131,6 +137,12 @@ try
 catch
 end
 
+%associate all structures to the first scanset.
+strNum = length(planC{indexS.structures});
+for i=1:strNum
+	planC{indexS.structures}(i).assocScanUID = planC{indexS.scan}(1).scanUID;
+end
+
 scanNum = length(planC{3});
 if (scanNum>1)
     button = questdlg(['There are ' num2str(scanNum) 'scans, do you want to put them together?'],'Merge CT in 4D Series', ...
@@ -161,12 +173,6 @@ if (scanNum>1)
             planC{3} = planC{3}(1); 
             planC{3}.scanArray = scanArray;
             planC{3}.scanInfo = scanInfo;
-            
-            %associate all structures to the first scanset.
-            strNum = length(planC{4});
-            for i=1:strNum
-                planC{4}(i).assocScanUID = planC{3}(1).scanUID;
-            end
                         
         case 'no'
                     
@@ -176,7 +182,11 @@ end
 %Sort contours for each structure to match the associated scan.
 for i=1:length(planC{indexS.structures})
     structure = planC{indexS.structures}(i);   
-    scanInd = getStructureAssociatedScan(i, planC);    
+    scanInd = getStructureAssociatedScan(i, planC);
+	if scanInd == 0 && length(planC{indexS.scan})==1
+		warning('Cannot associate structures to the scan.\n');
+		scanInd=1;
+	end
     
     zmesh   = [planC{indexS.scan}(scanInd).scanInfo.zValue];
     slicethickness = diff(zmesh); 
