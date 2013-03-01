@@ -20,17 +20,17 @@ else
 end
 
 %Check for .bz2 compression and extract .mat file.
-[pathstr, name, ext, versn] = fileparts(filename);
+[pathstr, name, ext] = fileparts(filename);
 if strcmpi(ext, '.bz2')
     bzFile      = 1;
     outstr      = gnuCERRCompression([fullfile(pathstr, name),ext], 'uncompress');
     loadfile    = fullfile(pathstr, name);
-    [pathstr, name, ext, versn] = fileparts([fullfile(pathstr, name),ext]);
+    [pathstr, name, ext] = fileparts([fullfile(pathstr, name),ext]);
 elseif strcmpi(ext, 'zip')
     bzFile      = 1;
     unzip(file,pathstr)
     loadfile    = fullfile(pathstr, name);
-    [pathstr, name, ext, versn] = fileparts([fullfile(pathstr, name),ext]);
+    [pathstr, name, ext] = fileparts([fullfile(pathstr, name),ext]);
 else
     bzFile      = 0;
     loadfile    = filename;

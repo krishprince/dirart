@@ -72,7 +72,7 @@ try
 		strname = planC{indexS.structures}(structIndex).structureName;
 		waitbar((k-1)/N,hbar,sprintf('Loading structure %s',strname));
 		isgood = 1;
-		if ~isfield(planC{indexS.structures}(structIndex),'meshRep') || (isfield(planC{indexS.structures}(structIndex),'meshRep') && (isempty(planC{indexS.structures}(structIndex).meshRep) || planC{indexS.structures}(structIndex).meshRep == 0))
+% 		if ~isfield(planC{indexS.structures}(structIndex),'meshRep') || (isfield(planC{indexS.structures}(structIndex),'meshRep') && (isempty(planC{indexS.structures}(structIndex).meshRep) || planC{indexS.structures}(structIndex).meshRep == 0))
 			fprintf('Generating meshRep for structure: %s\n',strname);
 			% Check the associated scans
 			assocScanID = assocScanIDs(k);
@@ -102,7 +102,7 @@ try
 				planC{indexS.structures}(structIndex).meshS = [];
 				planC{indexS.structures}(structIndex).meshRep = 0;
 			end
-		end
+% 		end
 		
 		if isgood == 1
 			structs{k} = planC{indexS.structures}(structIndex);
