@@ -8,5 +8,5 @@ if ndims(checkerboard_size) == 1
 end
 
 checkerboard_size = round(checkerboard_size ./ handles.images(2).voxelsize);
-checkerboard_size = max(checkerboard_size,5);
+checkerboard_size = max(checkerboard_size,3);
 

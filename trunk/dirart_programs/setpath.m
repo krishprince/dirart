@@ -4,8 +4,8 @@ P=path;
 
 p = mfilename('fullpath');
 p = [p '.m'];
-[pathstr, name, ext, versn] = fileparts(p);
-[pathstr2,name,ext,versn]=fileparts(pathstr);
+[pathstr] = fileparts(p);
+[pathstr2]=fileparts(pathstr);
 
 if( isempty(strfind(P,'basic image functions')) )
 	addpath([pathstr2 filesep 'basic image functions']);

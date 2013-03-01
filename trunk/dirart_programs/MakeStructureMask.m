@@ -39,9 +39,11 @@ else
 	structures{1} = strdata;
 	info = ProcessCERRStructures(structures);
 	zVals = info.zvalues(~isnan(info.zvalues));
-% 	zVals = info.zvalues;
-	delz = zVals(2)-zVals(1);
-	zVals = [zVals(1)-delz zVals zVals(end)+delz];
+	if length(zVals)>1
+		% 	zVals = info.zvalues;
+		delz = zVals(2)-zVals(1);
+		zVals = [zVals(1)-delz zVals zVals(end)+delz];
+	end
 	xVals = (info.xmin-4):2:(info.xmax+4);
 	yVals = (info.ymin-4):2:(info.ymax+4);
 end

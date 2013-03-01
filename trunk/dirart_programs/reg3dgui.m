@@ -1221,7 +1221,7 @@ if ~isempty(answer)
 		handles.gui_options.checkerboard_size(:,2) = str2double(answer{2});
 		handles.gui_options.checkerboard_size(:,3) = str2double(answer{3});
 		handles.gui_options.checkerboard_size = round(handles.gui_options.checkerboard_size);
-		maxvals = ones(handles.gui_options.num_panels,3)*8;
+		maxvals = ones(handles.gui_options.num_panels,3)*3;
 		handles.gui_options.checkerboard_size = max(handles.gui_options.checkerboard_size,maxvals);
 		guidata(handles.gui_handles.figure1,handles);
 		ConditionalRefreshDisplay(handles,8:9);
@@ -1231,7 +1231,7 @@ if ~isempty(answer)
 		handles.gui_options.checkerboard_size(idx,2) = str2double(answer{2});
 		handles.gui_options.checkerboard_size(idx,3) = str2double(answer{3});
 		handles.gui_options.checkerboard_size = round(handles.gui_options.checkerboard_size);
-		maxvals = ones(handles.gui_options.num_panels,3)*8;
+		maxvals = ones(handles.gui_options.num_panels,3)*3;
 		handles.gui_options.checkerboard_size = max(handles.gui_options.checkerboard_size,maxvals);
 		guidata(handles.gui_handles.figure1,handles);
 		update_display(handles,idx);
